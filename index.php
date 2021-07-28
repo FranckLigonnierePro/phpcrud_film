@@ -1,3 +1,14 @@
+<?php 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+require "./db.php";
+$sql = "SELECT * FROM film";
+$statement = $connection->prepare($sql);
+$statement->execute();
+$films = $statement->fetchAll(PDO::FETCH_OBJ);
+?>
+
 <?php require "./components/header.php"; ?>
 
 <div class="container">
@@ -19,16 +30,18 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <?php foreach($films as $element): ?>
                     <tr>
-                        <th scope="row">1</th>
-                        <td>cobra</td>
-                        <td>1993</td>
-                        <td><img src="./images/Cobra.jpg" width="100"></td>
+                        <th scope="row"><?= $element->id ?></th>
+                        <td><?= $element->titre ?></td>
+                        <td><?= $element->annee ?></td>
+                        <td><img src="<?= $element->image ?>" width="100"></td>
                         <td>
                             <button type="button" class="btn btn-success">Editer</button>
                             <button type="button" class="btn btn-danger">Supprimer</button>
                         </td>
                     </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
